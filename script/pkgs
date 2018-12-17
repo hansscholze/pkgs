@@ -1,0 +1,29 @@
+#! /usr/bin/env bash
+
+shopt -s globstar
+
+[[ -n $PKGSMACHINE ]] || { >&2 echo "PKGSMACHINE environment variable not set"; exit 1; }
+machinedir=~/pkgs/machine/$PKGSMACHINE
+[[ -d $machinedir ]] || { >&2 echo "machine directory \"${machinedir}\" does not exist"; exit 1; }
+pkgglob=${machinedir}/**/*.pkgs
+
+cmdbase="pacman -Qgq base base-devel"
+
+case $1 in
+	unneeded) comm -13 \
+		<(cat $pkgglob <($cmdbase) | sort -u) \
+		<(pacman -Qtq | sort) ;;
+	optneeded) comm -13 \
+		<(cat $pkgglob <($cmdbase) <(pacman -Qtq) | sort -u) \
+		<(pacman -Qttq | sort) ;;
+	missing) comm -23 \
+		<(cat $pkgglob | sort -u) \
+		<(pacman -Qq | sort) ;;
+	*) { >&2 echo "unrecognized query \"${1}\""; exit 1; }
+esac | case $2 in
+	list | '') cat ;;
+	grep) grep --color -Rn -f - ${machinedir} ;;
+	info) xargs pacman -Qi | less ;;
+	install) sudo pacman -S - ;;
+	*) { >&2 echo "unrecognized action \"${2}\""; exit 1; }
+esac

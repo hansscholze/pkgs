@@ -1,0 +1,12 @@
+numlockx
+xbindkeys
+xmobar
+xmonad
+xmonad-contrib
+xorg-server
+xorg-xev
+xorg-xinit
+xorg-xinput
+xorg-xkill
+xorg-xmessage
+xterm
