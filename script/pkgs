@@ -5,20 +5,20 @@ shopt -s globstar
 [[ -n $PKGSMACHINE ]] || { >&2 echo "PKGSMACHINE environment variable not set"; exit 1; }
 machinedir=~/pkgs/machine/$PKGSMACHINE
 [[ -d $machinedir ]] || { >&2 echo "machine directory \"${machinedir}\" does not exist"; exit 1; }
-pkgglob=${machinedir}/**/*.pkgs
 
-cmdbase="pacman -Qgq base base-devel"
+cmdbase="pacman -Qgq base-devel"
 
-case $1 in
+find -L $machinedir -name '*.pkgs' -exec cat {} \; | case $1 in
 	unneeded) comm -13 \
-		<(cat $pkgglob <($cmdbase) | sort -u) \
+		<(cat - <($cmdbase) | sort -u) \
 		<(pacman -Qtq | sort) ;;
 	optneeded) comm -13 \
-		<(cat $pkgglob <($cmdbase) <(pacman -Qtq) | sort -u) \
+		<(cat - <($cmdbase) <(pacman -Qtq) | sort -u) \
 		<(pacman -Qttq | sort) ;;
 	missing) comm -23 \
-		<(cat $pkgglob | sort -u) \
+		<(sort -u) \
 		<(pacman -Qq | sort) ;;
+	selected) sort -u ;;
 	*) { >&2 echo "unrecognized query \"${1}\""; exit 1; }
 esac | case $2 in
 	list | '') cat ;;

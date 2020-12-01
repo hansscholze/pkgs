@@ -1,8 +1,10 @@
 gnu-netcat
+inetutils
+mosh
 net-tools
 nmap
+openssh
 socat
 traceroute
 wget
 whois
-wireshark-gtk

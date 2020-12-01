@@ -1,3 +1,4 @@
+freetype2-demos
 numlockx
 xbindkeys
 xmobar
@@ -9,4 +10,6 @@ xorg-xinit
 xorg-xinput
 xorg-xkill
 xorg-xmessage
+xorg-xrandr
+xsettingsd
 xterm
