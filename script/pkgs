@@ -1,29 +1,24 @@
 #! /usr/bin/env bash
+machinedir=$1
+query=$2
+action=$3
 
-shopt -s globstar
-
-[[ -n $PKGSMACHINE ]] || { >&2 echo "PKGSMACHINE environment variable not set"; exit 1; }
-machinedir=~/pkgs/machine/$PKGSMACHINE
-[[ -d $machinedir ]] || { >&2 echo "machine directory \"${machinedir}\" does not exist"; exit 1; }
-
-cmdbase="pacman -Qgq base-devel"
-
-find -L $machinedir -name '*.pkgs' -exec cat {} \; | case $1 in
-	unneeded) comm -13 \
-		<(cat - <($cmdbase) | sort -u) \
-		<(pacman -Qtq | sort) ;;
-	optneeded) comm -13 \
-		<(cat - <($cmdbase) <(pacman -Qtq) | sort -u) \
-		<(pacman -Qttq | sort) ;;
-	missing) comm -23 \
-		<(sort -u) \
-		<(pacman -Qq | sort) ;;
-	selected) sort -u ;;
-	*) { >&2 echo "unrecognized query \"${1}\""; exit 1; }
-esac | case $2 in
+[[ -d $machinedir ]] || { >&2 echo "machine directory \"$machinedir\" does not exist"; exit 1; }
+{
+	echo base
+	find -L "$machinedir/group" -type f -exec xargs -a {} pacman -Sgq \;
+	find -L "$machinedir/official" -type f -exec cat {} \;
+	find -L "$machinedir/aur" -type f -exec cat {} \;
+} | sort -u |  case $query in
+	unneeded) comm -13 - <(pacman -Qtq | sort) ;;
+	optneeded) cat - <(pacman -Qtq) | sort | comm -13 - <(pacman -Qttq | sort) ;;
+	missing) comm -23 - <(pacman -Qq | sort) ;;
+	selected) cat ;;
+	*) { >&2 echo "unrecognized query \"$query\""; exit 1; }
+esac | case $action in
 	list | '') cat ;;
-	grep) grep --color -Rn -f - ${machinedir} ;;
+	grep) grep --color -Rn -f - "$machinedir" ;;
 	info) xargs pacman -Qi | less ;;
 	install) sudo pacman -S - ;;
-	*) { >&2 echo "unrecognized action \"${2}\""; exit 1; }
+	*) { >&2 echo "unrecognized action \"$action\""; exit 1; }
 esac
