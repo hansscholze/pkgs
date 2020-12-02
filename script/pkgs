@@ -19,6 +19,6 @@ esac | case $action in
 	list | '') cat ;;
 	grep) grep --color -Rn -f - "$machinedir" ;;
 	info) xargs pacman -Qi | less ;;
-	install) sudo pacman -S - ;;
+	install) pacman -S - ;;
 	*) { >&2 echo "unrecognized action \"$action\""; exit 1; }
 esac
