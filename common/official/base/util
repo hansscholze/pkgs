@@ -13,6 +13,7 @@ ripgrep
 rlwrap
 screen
 strace
+sudo
 time
 tmux
 usbutils
