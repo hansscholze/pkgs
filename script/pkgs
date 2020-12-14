@@ -6,10 +6,10 @@ action=$3
 [[ -d $machinedir ]] || { >&2 echo "machine directory \"$machinedir\" does not exist"; exit 1; }
 {
 	echo base
-	find -L "$machinedir/group" -type f -exec xargs -a {} pacman -Sgq \;
+	find -L "$machinedir/group" -type f -exec xargs --no-run-if-empty --arg-file={} pacman -Sgq \;
 	find -L "$machinedir/official" -type f -exec cat {} \;
 	find -L "$machinedir/aur" -type f -exec cat {} \;
-} | sort -u |  case $query in
+} | sort -u | case $query in
 	unneeded) comm -13 - <(pacman -Qtq | sort) ;;
 	optneeded) cat - <(pacman -Qtq) | sort | comm -13 - <(pacman -Qttq | sort) ;;
 	missing) comm -23 - <(pacman -Qq | sort) ;;
