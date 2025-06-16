@@ -2,8 +2,12 @@ chromium
 firefox
 freetype2-demos
 gnome-terminal
-nautilus
 numlockx
+otf-libertinus
+thunar
+thunar-archive-plugin
+tk
+xarchiver
 xbindkeys
 xorg-xinit
 xsettingsd

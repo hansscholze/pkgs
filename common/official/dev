@@ -1,3 +1,4 @@
+base-devel
 boost
 clang
 cmake
@@ -7,7 +8,7 @@ geany
 gedit
 gdb
 git
-gvim
+vim
 meld
 subversion
 tokei

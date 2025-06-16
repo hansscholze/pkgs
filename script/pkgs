@@ -5,14 +5,13 @@ action=$3
 
 [[ -d $machinedir ]] || { >&2 echo "machine directory \"$machinedir\" does not exist"; exit 1; }
 {
-	echo base
 	find -L "$machinedir/group" -type f -exec xargs --no-run-if-empty --arg-file={} pacman -Sgq \;
 	find -L "$machinedir/official" -type f -exec cat {} \;
 	find -L "$machinedir/aur" -type f -exec cat {} \;
 } | sort -u | case $query in
-	unneeded) comm -13 - <(pacman -Qtq | sort) ;;
-	optneeded) cat - <(pacman -Qtq) | sort | comm -13 - <(pacman -Qttq | sort) ;;
-	missing) comm -23 - <(pacman -Qq | sort) ;;
+	unneeded) comm --check-order -13 - <(pacman -Qtq | sort) ;;
+	optneeded) cat - <(pacman -Qtq) | sort | comm --check-order -13 - <(pacman -Qttq | sort) ;;
+	missing) comm --check-order -23 - <(pacman -Qq | sort) ;;
 	selected) cat ;;
 	*) { >&2 echo "unrecognized query \"$query\""; exit 1; }
 esac | case $action in

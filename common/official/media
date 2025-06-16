@@ -5,5 +5,7 @@ gimp
 guvcview
 hugin
 imagemagick
+perl-image-exiftool
 rawtherapee
+sane
 vlc

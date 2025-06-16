@@ -9,9 +9,7 @@ inotify-tools
 lsof
 lsscsi
 mdadm
-ntfs-3g
 nvme-cli
-p7zip
 rsync
 smartmontools
 tree
