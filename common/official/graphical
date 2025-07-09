@@ -1,8 +1,9 @@
 adobe-source-code-pro-fonts
 chromium
-firefox
+dmenu
 freetype2-demos
 gnome-terminal
+j4-dmenu-desktop
 numlockx
 otf-libertinus
 thunar
@@ -10,6 +11,10 @@ thunar-archive-plugin
 tk
 xarchiver
 xbindkeys
+xmobar
+xmonad
+xmonad-contrib
 xorg-xinit
+xorg-xmessage
 xsettingsd
 xterm
