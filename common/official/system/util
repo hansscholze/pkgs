@@ -10,6 +10,7 @@ man-db
 man-pages
 nano
 parallel
+pv
 ripgrep
 rlwrap
 screen
