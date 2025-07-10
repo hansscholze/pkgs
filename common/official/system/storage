@@ -3,6 +3,7 @@ dos2unix
 dosfstools
 e2fsprogs
 exfatprogs
+git
 hddtemp
 hdparm
 inotify-tools
